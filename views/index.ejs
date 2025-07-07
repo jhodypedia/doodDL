@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DoodStream Downloader</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>DoodStream Downloader</h1>
+    <form action="/download" method="POST">
+      <input type="text" name="url" placeholder="Tempelkan URL Doodstream" required>
+      <button type="submit">Dapatkan Link Download</button>
+    </form>
+
+    <% if (error) { %>
+      <p class="error"><%= error %></p>
+    <% } %>
+
+    <% if (videoUrl) { %>
+      <div class="result">
+        <video controls src="<%= videoUrl %>" width="100%"></video>
+        <br>
+        <a href="<%= videoUrl %>" download class="btn">Download Video</a>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>
