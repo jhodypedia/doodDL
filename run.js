@@ -24,20 +24,24 @@ app.post('/api/fetch', async (req, res) => {
     });
 
     const $ = cheerio.load(response.data);
-    const scriptContent = $('script').filter((i, el) => {
-      return $(el).html()?.includes('sources');
-    }).html();
+    const scriptTags = $('script').get();
+    let videoUrl = null;
 
-    if (!scriptContent) {
-      return res.status(400).json({ error: 'Script sources tidak ditemukan.' });
+    for (let tag of scriptTags) {
+      const html = $(tag).html();
+      if (html && html.includes('eval')) {
+        const match = html.match(/https:\/\/[^\s"']+\.mp4/);
+        if (match && match[0]) {
+          videoUrl = match[0];
+          break;
+        }
+      }
     }
 
-    const match = scriptContent.match(/sources:\s*\[\{file:"(.*?)"/);
-    if (!match || !match[1]) {
-      return res.status(400).json({ error: 'Link video tidak ditemukan.' });
+    if (!videoUrl) {
+      return res.status(400).json({ error: 'Link video tidak ditemukan di halaman.' });
     }
 
-    const videoUrl = match[1];
     res.json({ videoUrl });
   } catch (err) {
     res.status(500).json({ error: 'Gagal memuat halaman atau format tidak sesuai.' });
