@@ -6,7 +6,7 @@ $(document).ready(function () {
     const url = $('#url').val().trim();
 
     if (!url) {
-      Swal.fire('Oops', 'Silakan masukkan URL dulu.', 'warning');
+      Swal.fire('Oops', 'Silakan tempelkan URL terlebih dahulu.', 'warning');
       return;
     }
 
@@ -26,7 +26,7 @@ $(document).ready(function () {
       },
       error: function (xhr) {
         $('#loading').hide();
-        Swal.fire('Gagal', xhr.responseJSON?.error || 'Terjadi kesalahan.', 'error');
+        Swal.fire('Gagal', xhr.responseJSON?.error || 'Terjadi kesalahan saat mengambil video.', 'error');
       }
     });
   });
